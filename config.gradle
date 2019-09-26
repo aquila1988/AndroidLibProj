@@ -1,0 +1,37 @@
+/***
+ * APP版本编译相关、第三方包引用库统一管理的配置文件
+ * **/
+ext {
+    android = [
+            buildToolsVersion: "29.0.0",
+            compileSdkVersion: 29,
+            minSdkVersion    : 15,
+            targetSdkVersion : 29,
+            versionCode      : 1, //发布后解开注释
+            versionName      : "1.0",
+    ]
+
+    dependencies = [
+
+//            "support_v7"        : ("com.android.support:appcompat-v7:${android.supportVersion}"),
+//            "recyclerview_v7"   : ("com.android.support:recyclerview-v7:${android.supportVersion}"),
+//            "design_v7"         : ("com.android.support:design:${android.supportVersion}"),
+//            "cardview_v7"       : ("com.android.support:cardview-v7:${android.supportVersion}"),
+
+//    implementation 'androidx.appcompat:appcompat:1.0.2'
+//    implementation 'androidx.core:core-ktx:1.0.2'
+//    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+"appcompat"        : "androidx.appcompat:appcompat:1.0.2",
+"core"             : "androidx.core:core-ktx:1.0.2",
+"recyclerview"             : "androidx.recyclerview:recyclerview:1.0.0",
+
+
+"kotlin"           : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version",
+
+"RXJava"           : "io.reactivex.rxjava2:rxjava:2.2.4",
+"RXAndroid"        : "io.reactivex.rxjava2:rxandroid:2.1.0",
+
+"constraint_Layout": "com.android.support.constraint:constraint-layout:2.0.0-alpha2",
+
+    ]
+}

@@ -1,0 +1,64 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+
+def cfg = rootProject.ext.android
+android {
+    compileSdkVersion cfg.compileSdkVersion
+    buildToolsVersion cfg.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion cfg.minSdkVersion
+        targetSdkVersion cfg.targetSdkVersion
+
+        dexOptions {
+            preDexLibraries false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+            java.srcDirs = ['src/main/java', '../generated-src/java']
+
+            res.srcDirs = [
+                    'src/main/res',
+                    'src/main/res/swipeback',
+
+                    'src/main/res/layout',
+                    'src/main/res/layout/widget',
+            ]
+        }
+    }
+}
+
+def lib = rootProject.ext.dependencies
+dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    implementation lib["kotlin"]
+    implementation lib["core"]
+    implementation lib["appcompat"]
+    implementation lib["constraint_Layout"]
+    implementation lib["recyclerview"]
+
+}
