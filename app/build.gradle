@@ -45,13 +45,13 @@ dependencies {
     implementation project(":libbase")
     implementation project(":liblogger")
 
-    implementation lib["kotlin"]
-    implementation lib["core"]
-    implementation lib["appcompat"]
-    implementation lib["constraint_Layout"]
+//    implementation lib["kotlin"]
+//    implementation lib["core"]
+//    implementation lib["appcompat"]
+//    implementation lib["constraint_Layout"]
 
-//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-//    implementation 'androidx.appcompat:appcompat:1.0.2'
-//    implementation 'androidx.core:core-ktx:1.0.2'
-//    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.core:core-ktx:1.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }

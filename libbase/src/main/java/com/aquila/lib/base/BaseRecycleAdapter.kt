@@ -11,32 +11,46 @@ import java.util.*
  */
 abstract class BaseRecycleAdapter<T, VH : BaseViewHolder> : RecyclerView.Adapter<VH>() {
 
-    private var dataCount = 0
+    protected var dataCount = 0
 
-    private var dataList: MutableList<T>? = null
-        get
+    open var dataList: MutableList<T>? = null
+        set(value) {
+            field = value
+            updateDataCount()
+            notifyDataSetChanged()
+        }
 
+//    open fun getDataList(): MutableList<T>? {
+//        return dataList
+//    }
+//
+//    //设置数据源
+//    open fun setDataList(list: MutableList<T>?) {
+//        this.dataList = list
+//        updateDataCount()
+//        notifyDataSetChanged()
+//    }
 
-    fun deleteItemIndex(position:Int) {
+    open fun deleteItemIndex(position: Int) {
         notifyItemRemoved(position)
         dataList!!.removeAt(position)
         updateDataCount()
     }
 
-    fun deleteItem(t: T) {
+    open fun deleteItem(t: T) {
         notifyItemRemoved(getDataPosition(t))
         dataList!!.remove(t)
         updateDataCount()
     }
 
-    fun getDataFromPosition(position: Int): T? {
+    open fun getDataFromPosition(position: Int): T? {
         return if (!dataList.isNullOrEmpty() && position in 0 until dataCount) dataList!![position] else null
     }
 
     /***
      * 获取数据在索引的位置
      */
-    fun getDataPosition(t: T): Int {
+    open fun getDataPosition(t: T): Int {
         return dataList?.let {
             it.indexOf(t)
         } ?: -1
@@ -44,7 +58,16 @@ abstract class BaseRecycleAdapter<T, VH : BaseViewHolder> : RecyclerView.Adapter
 
 
     //添加一条数据
-    fun addOneData(t: T) {
+    open fun addOneData(index: Int, t: T) {
+        if (dataList == null) {
+            dataList = ArrayList()
+        }
+        dataList!!.add(index, t)
+        updateDataCount()
+        notifyDataSetChanged()
+    }
+
+    open fun addOneData(t: T) {
         if (dataList == null) {
             dataList = ArrayList()
         }
@@ -54,15 +77,8 @@ abstract class BaseRecycleAdapter<T, VH : BaseViewHolder> : RecyclerView.Adapter
     }
 
 
-    //设置数据源
-    fun setDataList(list: MutableList<T>) {
-        this.dataList = list
-        updateDataCount()
-        notifyDataSetChanged()
-    }
-
     //添加一组数据
-    fun addDataList(list: MutableList<T>?) {
+    open fun addDataList(list: MutableList<T>?) {
         if (list.isNullOrEmpty()) {
             return
         }

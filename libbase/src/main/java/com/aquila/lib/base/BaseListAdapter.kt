@@ -12,13 +12,13 @@ import java.util.*
  */
 abstract class BaseListAdapter<T, VH : BaseViewHolder> : BaseAdapter() {
     private var dataList: MutableList<T>? = null
-
+        get
 
     private var dataCount: Int = 0
 
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
         var convertView = view
-        var holder: VH? = null
+        var holder: VH
         if (convertView == null) {
             holder = onCreateViewHolder(parent, getViewType(position))
             convertView = holder.itemView
@@ -35,7 +35,7 @@ abstract class BaseListAdapter<T, VH : BaseViewHolder> : BaseAdapter() {
 
     abstract fun onCreateViewHolder(parent: ViewGroup, type: Int): VH
 
-    fun getViewType(position: Int): Int {
+    open fun getViewType(position: Int): Int {
         return position
     }
 
@@ -43,14 +43,14 @@ abstract class BaseListAdapter<T, VH : BaseViewHolder> : BaseAdapter() {
     /**
      * 设置数据源
      */
-    fun setDataList(dataList: MutableList<T>) {
+    open fun setDataList(dataList: MutableList<T>) {
         this.dataList = dataList
         dataCount = getDateCount()
         notifyDataSetChanged()
     }
 
 
-    fun getDateCount(): Int {
+    open fun getDateCount(): Int {
         return if (dataList.isNullOrEmpty()) 0 else dataList!!.size
     }
 
@@ -58,7 +58,7 @@ abstract class BaseListAdapter<T, VH : BaseViewHolder> : BaseAdapter() {
      * 添加数据的列表
      * @param list
      */
-    fun addDataList(list: MutableList<T>) {
+    open fun addDataList(list: MutableList<T>) {
         if (this.dataList == null) {
             this.dataList = list
         } else {
@@ -68,14 +68,14 @@ abstract class BaseListAdapter<T, VH : BaseViewHolder> : BaseAdapter() {
         notifyDataSetChanged()
     }
 
-    fun getDataList(): MutableList<T>? {
+    open fun getDataList(): MutableList<T>? {
         return dataList
     }
 
     /**
      * 添加一条数据
      */
-    fun addOneData(t: T) {
+    open fun addOneData(t: T) {
         if (dataList == null) {
             dataList = ArrayList()
         }
@@ -87,7 +87,7 @@ abstract class BaseListAdapter<T, VH : BaseViewHolder> : BaseAdapter() {
     /***
      * 删除一条数据
      */
-    fun deleteItem(t: T): Boolean {
+    open fun deleteItem(t: T): Boolean {
         var flag = false
         if (dataList != null) {
             flag = dataList!!.remove(t)
@@ -100,7 +100,7 @@ abstract class BaseListAdapter<T, VH : BaseViewHolder> : BaseAdapter() {
     /***
      * 获取数据在索引的位置
      */
-    fun getDataPosition(t: T): Int {
+    open fun getDataPosition(t: T): Int {
         return if (dataList == null) {
             -1
         } else dataList!!.indexOf(t)

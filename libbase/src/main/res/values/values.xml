@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--**************ids**************************************-->
+    <item name="statusbarutil_fake_status_bar_view" type="id" />
+    <item name="statusbarutil_translucent_view" type="id" />
+
+
     <!--**************Color**************************************-->
     <color name="color_0000">#0000</color>
 
     <!--**************Integer**************************************-->
+
     <!--Activity界面跳转过度动画的时间-->
     <integer name="activity_slide_duration">350</integer>
 
@@ -13,7 +19,6 @@
         <item name="android:windowBackground">@color/color_0000</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>
-
 
 
 </resources>

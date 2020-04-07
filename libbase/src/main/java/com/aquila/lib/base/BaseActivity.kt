@@ -1,8 +1,6 @@
 package com.aquila.lib.base
 
 import android.os.Bundle
-import android.view.View
-
 import com.aquila.lib.swipeBack.SwipeBackActivityBase
 import com.aquila.lib.swipeBack.SwipeBackActivityHelper
 import com.aquila.lib.swipeBack.SwipeBackLayout
@@ -25,12 +23,12 @@ open class BaseActivity : BaseRootActivity(), SwipeBackActivityBase {
 
     }
 
-    override fun <T : View> findViewById(id: Int): T {
-        val v = super.findViewById<T>(id)
-        return if (v == null && mHelper != null) {
-            mHelper!!.findViewById(id)
-        } else v
-    }
+//    override fun <T : View> findViewById(id: Int): T {
+//        val v = super.findViewById<T>(id)
+//        return if (v == null && mHelper != null) {
+//            mHelper!!.findViewById(id)
+//        } else v
+//    }
 
     override fun getSwipeBackLayout(): SwipeBackLayout? {
         return mHelper?.swipeBackLayout

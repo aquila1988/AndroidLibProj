@@ -5,16 +5,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.annotation.ColorInt;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-
-import androidx.annotation.ColorInt;
-import androidx.annotation.RequiresApi;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.drawerlayout.widget.DrawerLayout;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -26,6 +25,55 @@ public class StatusBarUtil {
     private static final int FAKE_STATUS_BAR_VIEW_ID = R.id.statusbarutil_fake_status_bar_view;
     private static final int FAKE_TRANSLUCENT_VIEW_ID = R.id.statusbarutil_translucent_view;
     private static final int TAG_KEY_HAVE_SET_OFFSET = -123;
+
+    /**
+     * 隐藏虚拟栏 ，显示的时候再隐藏掉
+     *
+     * @param window
+     */
+    static public void hideNavigationBar(Window window) {
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        window.getDecorView().setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                        //布局位于状态栏下方
+                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                        //全屏
+                        View.SYSTEM_UI_FLAG_FULLSCREEN |
+                        //隐藏导航栏
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+                if (Build.VERSION.SDK_INT >= 19) {
+                    uiOptions |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+                } else {
+                    uiOptions |= View.SYSTEM_UI_FLAG_LOW_PROFILE;
+                }
+                window.getDecorView().setSystemUiVisibility(uiOptions);
+            }
+        });
+    }
+
+    /**
+     * dialog 需要全屏的时候用，和clearFocusNotAle() 成对出现
+     * 在show 前调用  focusNotAle   show后调用clearFocusNotAle
+     *
+     * @param window
+     */
+    static public void focusNotAle(Window window) {
+        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+    }
+
+    /**
+     * dialog 需要全屏的时候用，focusNotAle() 成对出现
+     * 在show 前调用  focusNotAle   show后调用clearFocusNotAle
+     *
+     * @param window
+     */
+    static public void clearFocusNotAle(Window window) {
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+    }
 
     /**
      * 设置状态栏颜色
@@ -627,8 +675,8 @@ public class StatusBarUtil {
     /**
      * 设置根布局参数
      */
-    private static void setRootView(Activity activity) {
-        ViewGroup parent = (ViewGroup) activity.findViewById(android.R.id.content);
+    public static void setRootView(Activity activity) {
+        ViewGroup parent = activity.findViewById(android.R.id.content);
         for (int i = 0, count = parent.getChildCount(); i < count; i++) {
             View childView = parent.getChildAt(i);
             if (childView instanceof ViewGroup) {
@@ -637,6 +685,7 @@ public class StatusBarUtil {
             }
         }
     }
+
 
     /**
      * 设置透明
@@ -657,7 +706,7 @@ public class StatusBarUtil {
      * 使状态栏透明
      */
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    private static void transparentStatusBar(Activity activity) {
+    public static void transparentStatusBar(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
